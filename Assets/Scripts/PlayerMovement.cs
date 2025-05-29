@@ -9,7 +9,9 @@ public class PlayerMovement : MonoBehaviour
     private Animator animator;
     private bool estaNoChao = true;
     private float velocidadeAtual;
-    private bool estahVivo = true;  
+    private bool contato = false;
+    private bool morrer = true;
+    private SistemaVida sVida;
     private Vector3 anguloRotacao = new Vector3(0, 90, 0);
     [SerializeField] private float velocidadeCorrer;
     [SerializeField] private float velocidadeAndar;
@@ -20,13 +22,14 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        sVida = GetComponent<SistemaVida>();
         velocidadeAtual = velocidadeAndar;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(estahVivo)
+        if(sVida.EstaVivo())
         {
             Andar();
             Girar();
@@ -34,6 +37,10 @@ public class PlayerMovement : MonoBehaviour
             Correr();
             Atacar();
             Magia();
+        }
+        else if (!sVida.EstaVivo() & morrer)
+        {
+            Morrer();
         }
        
     }
@@ -106,7 +113,7 @@ public class PlayerMovement : MonoBehaviour
     {
         animator.SetBool("EstaVivo" , false);
         animator.SetTrigger("Morrer");
-        estahVivo = false;
+        rb.Sleep();
     }
 
     private void Interagir()
@@ -134,6 +141,13 @@ public class PlayerMovement : MonoBehaviour
             animator.SetTrigger("Magia");
         }
     }
+
+    public void Hit()
+    {
+        animator.SetTrigger("Hit");
+    }
+
+
     /*
     private void OnCollisionEnter(Collision collision)
     {
@@ -152,10 +166,13 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("EstaNoChao", true);
         }
 
-        if (collision.gameObject.CompareTag("Fatal") && estahVivo)
+        if (collision.gameObject.CompareTag("Quebrar") && Input.GetMouseButtonDown(0))
         {
-            Morrer();
+            Atacar();
+            Destroy(collision.gameObject);
         }
+
+      
     }
 
     private void OnCollisionExit(Collision collision)
@@ -164,6 +181,10 @@ public class PlayerMovement : MonoBehaviour
         {
             estaNoChao = false;
             animator.SetBool("EstaNoChao", false);
+        }
+        if (collision.gameObject.CompareTag("Quebrar"))
+        {
+            contato = false;
         }
     }
 
