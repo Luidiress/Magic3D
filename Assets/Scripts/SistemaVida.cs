@@ -41,8 +41,10 @@ public class SistemaVida : MonoBehaviour
         {
             pMover.Hit();
             vida -= dano;
+            VerificarVida();
             yield return new WaitForSeconds(0.5f);
             levarDano = true;
+            
         }
     }
 

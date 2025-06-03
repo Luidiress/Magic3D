@@ -6,6 +6,11 @@ TagManager:
   tags:
   - Floor
   - Fatal
+  - Item
+  - Porta
+  - Interragir
+  - Chave
+  - Quebrar
   layers:
   - Default
   - TransparentFX
