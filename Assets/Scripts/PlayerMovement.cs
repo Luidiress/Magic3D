@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -18,6 +19,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float velocidadeCorrer;
     [SerializeField] private float velocidadeAndar;
     [SerializeField] private float forcaPulo;
+    [SerializeField] private GameObject magiaPrefab;
+    [SerializeField] private GameObject miraMagia;
+    [SerializeField] private int forcaArremeco;
+    private object rbMagia;
+    private int forceArrmeco;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -141,9 +147,21 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
+            StartCoroutine(LancarMagia());
             animator.SetTrigger("Magia");
         }
     }
+
+    IEnumerator LancarMagia()
+    {
+        yield return new WaitForSeconds(0.5f);
+        GameObject magia = Instantiate(magiaPreFab, miraMagia.transform.position , miraMagia.transform.rotation);
+        magia.transform.rotation *= Quaternion.Euler(0, -90 , 0);
+        Rigidbody rb = magia.GetComponent<Rigidbody>();
+        rbMagia.AddForce(miraMagia.transform.forward * forceArrmeco, ForceMode.Impulse);
+        sVida.UsarMana();
+    }
+
 
     public void Hit()
     {
