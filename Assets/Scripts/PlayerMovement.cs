@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -12,18 +11,16 @@ public class PlayerMovement : MonoBehaviour
     private float velocidadeAtual;
     private bool contato = false;
     private bool morrer = true;
-    private bool temChave = false;
-    private int numeroChave;
     private SistemaVida sVida;
     private Vector3 anguloRotacao = new Vector3(0, 90, 0);
-    [SerializeField] private float velocidadeCorrer;
+    private bool temChave = false;
+    private int numeroChave = 0;
     [SerializeField] private float velocidadeAndar;
+    [SerializeField] private float velocidadeCorrer;
     [SerializeField] private float forcaPulo;
-    [SerializeField] private GameObject magiaPrefab;
+    [SerializeField] private GameObject magiaPreFab;
     [SerializeField] private GameObject miraMagia;
     [SerializeField] private int forcaArremeco;
-    private object rbMagia;
-    private int forceArrmeco;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -37,20 +34,19 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(sVida.EstaVivo())
+        if (sVida.EstaVivo())
         {
             Andar();
             Girar();
             Pular();
             Correr();
-            Atacar();
+            //Atacar();
             Magia();
         }
-        else if (!sVida.EstaVivo() & morrer)
+        else if (!sVida.EstaVivo() && morrer)
         {
             Morrer();
         }
-       
     }
 
     private void Andar()
@@ -65,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("Andar", true);
             animator.SetBool("AndarTras", false);
         }
-        else if(Input.GetKey(KeyCode.S))
+        else if (Input.GetKey(KeyCode.S))
         {
             animator.SetBool("AndarTras", true);
             animator.SetBool("Andar", false);
@@ -84,7 +80,7 @@ public class PlayerMovement : MonoBehaviour
             Quaternion.Euler(anguloRotacao * inputH * Time.deltaTime);
         rb.MoveRotation(rb.rotation * deltaRotation);
 
-        if(Input.GetKey(KeyCode.A) ||
+        if (Input.GetKey(KeyCode.A) ||
                     Input.GetKey(KeyCode.D) ||
                         Input.GetKey(KeyCode.LeftArrow) ||
                             Input.GetKey(KeyCode.RightArrow))
@@ -95,17 +91,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void Pular()
     {
-        if(Input.GetKeyDown(KeyCode.Space) && estaNoChao)
+        if (Input.GetKeyDown(KeyCode.Space) && estaNoChao)
         {
             rb.AddForce(Vector3.up * forcaPulo, ForceMode.Impulse);
             animator.SetTrigger("Pular");
-          
         }
     }
 
     private void Correr()
     {
-        if(Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
         {
             velocidadeAtual = velocidadeCorrer;
             animator.SetBool("Correr", true);
@@ -113,14 +108,14 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             velocidadeAtual = velocidadeAndar;
-            animator.SetBool("Correr" , false);
+            animator.SetBool("Correr", false);
         }
-
     }
 
     private void Morrer()
     {
-        animator.SetBool("EstaVivo" , false);
+        morrer = false;
+        animator.SetBool("EstaVivo", false);
         animator.SetTrigger("Morrer");
         rb.Sleep();
     }
@@ -137,10 +132,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void Atacar()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            animator.SetTrigger("Atacar");
-        }
+        //if(Input.GetMouseButtonDown(0))
+        //{
+        animator.SetTrigger("Atacar");
+        //}
     }
 
     private void Magia()
@@ -154,31 +149,29 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator LancarMagia()
     {
+
         yield return new WaitForSeconds(0.5f);
-        GameObject magia = Instantiate(magiaPreFab, miraMagia.transform.position , miraMagia.transform.rotation);
-        magia.transform.rotation *= Quaternion.Euler(0, -90 , 0);
-        Rigidbody rb = magia.GetComponent<Rigidbody>();
-        rbMagia.AddForce(miraMagia.transform.forward * forceArrmeco, ForceMode.Impulse);
+        GameObject magia = Instantiate(magiaPreFab, miraMagia.transform.position, miraMagia.transform.rotation);
+        //magia.transform.rotation *= Quaternion.Euler(0, -90, 0); //Machado
+        magia.transform.rotation *= Quaternion.Euler(90, 0, 180); //Flecha
+        Rigidbody rbMagia = magia.GetComponentInChildren<Rigidbody>();
+        rbMagia.AddForce(miraMagia.transform.forward * forcaArremeco, ForceMode.Impulse);
         sVida.UsarMana();
     }
-
 
     public void Hit()
     {
         animator.SetTrigger("Hit");
     }
 
-
-    /*
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Floor"))
+        if (collision.gameObject.CompareTag("Quebra"))
         {
-            estaNoChao = true;
-            animator.SetBool("EstaNoChao", true);
+            Atacar();
         }
     }
-    */
+
     private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.CompareTag("Floor"))
@@ -187,13 +180,11 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("EstaNoChao", true);
         }
 
-        if (collision.gameObject.CompareTag("Quebrar") && Input.GetMouseButtonDown(0))
+        if (collision.gameObject.CompareTag("Quebra") && Input.GetMouseButtonDown(0))
         {
             Atacar();
             Destroy(collision.gameObject);
         }
-
-      
     }
 
     private void OnCollisionExit(Collision collision)
@@ -203,36 +194,40 @@ public class PlayerMovement : MonoBehaviour
             estaNoChao = false;
             animator.SetBool("EstaNoChao", false);
         }
-        if (collision.gameObject.CompareTag("Quebrar"))
+        if (collision.gameObject.CompareTag("Quebra"))
         {
+
             contato = false;
         }
+
     }
 
-    private void OnTriggerStay(Collider Other)
+    private void OnTriggerStay(Collider other)
     {
-        if (Other.CompareTag("Item") && Input.GetKey(KeyCode.E))
+        if (other.CompareTag("Item") && Input.GetKey(KeyCode.E))
         {
             Pegar();
-            Destroy(Other.gameObject);
+            Destroy(other.gameObject);
         }
-        else if (Other.CompareTag("Porta") && Input.GetKey(KeyCode.E))
+        else if (other.CompareTag("Porta") && Input.GetKey(KeyCode.E))
         {
-            if (!Other.gameObject.GetComponent<Porta>().EstaTrancada())
+            if (other.gameObject.GetComponent<Porta>().EstaTrancada())
             {
                 Interagir();
-                Other.gameObject.GetComponent<Porta>().AbrirPorta(numeroChave);
+                other.gameObject.GetComponent<Porta>().AbrirPorta(numeroChave);
             }
-            Interagir();
-            Other.gameObject.GetComponent<Porta>().AbrirPorta();
+            else if (!other.gameObject.GetComponent<Porta>().EstaTrancada())
+            {
+                Interagir();
+                other.gameObject.GetComponent<Porta>().AbrirPorta();
+            }
         }
-        else if (Other.CompareTag("Chave") && Input.GetKey(KeyCode.E))
+        else if (other.CompareTag("Chave") && Input.GetKey(KeyCode.E))
         {
             Pegar();
             temChave = true;
-            numeroChave = Other.gameObject.GetComponent<Chave>().NumeroPorta();
-            Other.gameObject.GetComponent<Chave>().PegarChave();
+            numeroChave = other.gameObject.GetComponent<Chave>().NumeroPorta();
+            other.gameObject.GetComponent<Chave>().PegarChave();
         }
-
     }
 }

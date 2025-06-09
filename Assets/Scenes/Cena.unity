@@ -5448,6 +5448,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9ca9313e07bd1ca4baafc509bd5c33bb, type: 3}
   m_PrefabInstance: {fileID: 607588611}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &474265660 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 47296301141432906, guid: 2e69a61f6c31d284a8c61889989b35bc, type: 3}
+  m_PrefabInstance: {fileID: 1586870288}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &476121420 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9ca9313e07bd1ca4baafc509bd5c33bb, type: 3}
@@ -15879,7 +15884,13 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 856764820635631856, guid: 2e69a61f6c31d284a8c61889989b35bc, type: 3}
       insertIndex: 0
       addedObject: {fileID: 1692511203}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 47296301141432906, guid: 2e69a61f6c31d284a8c61889989b35bc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2093356748}
+    - targetCorrespondingSourceObject: {fileID: 47296301141432906, guid: 2e69a61f6c31d284a8c61889989b35bc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2093356747}
   m_SourcePrefab: {fileID: 100100000, guid: 2e69a61f6c31d284a8c61889989b35bc, type: 3}
 --- !u!1001 &1600393331
 PrefabInstance:
@@ -21558,6 +21569,40 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 856764820635631856, guid: 2e69a61f6c31d284a8c61889989b35bc, type: 3}
   m_PrefabInstance: {fileID: 1586870288}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2093356747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 474265660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc6bbbd074b1fbd48b2e5c50db833a73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  velocidadeAndar: 10
+  velocidadeCorrer: 5
+  forcaPulo: 200
+  magiaPreFab: {fileID: 1424595164857481642, guid: 5fdc306b0a973fc46bfb9b27130b5d21, type: 3}
+  miraMagia: {fileID: 1692511202}
+  forcaArremeco: 25
+--- !u!114 &2093356748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 474265660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1105edc7246f4b345834a8566a620639, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vida: 100
+  mana: 100
+  manaIndicador: {fileID: 0}
+  vidaIndicador: {fileID: 0}
 --- !u!4 &2096451239 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9ca9313e07bd1ca4baafc509bd5c33bb, type: 3}

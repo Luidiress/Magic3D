@@ -1,32 +1,20 @@
 using UnityEngine;
 
-public class Machado : MonoBehaviour
+public class MachadoLancado : MonoBehaviour
 {
     [SerializeField] private int dano;
-    [SerializeField] private GameObject destroyMachadoProFab;
+    [SerializeField] private GameObject destroyMachadoPreFab;
+
+    //Ajuste de rotacao inicial
+    private void Start()
+    {
+        transform.rotation = Quaternion.Euler(0, 90, 0);
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
-        Instantiate(destroyMachadoProFab, gameObject.transform.position, gameObject.transform.rotation);
+        Instantiate(destroyMachadoPreFab, gameObject.transform.position, gameObject.transform.rotation);
         GetComponent<ParticleSystem>().Stop();
-        Destroy (this.gameObject);
-    }
-
-    private void Joga()
-    {
-        if (Input.GetMouseButtonDown(1))
-        {
-            StartCoroutine(JogarMachada());
-            animator.SetTrigger("JogarMachado");
-        }
-    }
-
-    IEnumerator JogarMachado()
-    {
-        yield return new WaitForSeconds(0.5f);
-        GameObject magia = Instantiate(machadoPreFab, miraMachado.transform.position, miraMachado.transform.rotation);
-        Rigidbody rb = magia.GetComponent<Rigidbody>();
-        rbMachado.AddForce(miraMachado.transform.forward * forceArrmeco, ForceMode.Impulse);
-        sVida.UsarMana();
+        Destroy(this.gameObject);
     }
 }
