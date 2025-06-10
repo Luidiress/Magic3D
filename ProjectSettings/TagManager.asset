@@ -11,6 +11,8 @@ TagManager:
   - Interragir
   - Chave
   - Quebrar
+  - Mana
+  - Vida
   layers:
   - Default
   - TransparentFX
