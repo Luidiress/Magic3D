@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 anguloRotacao = new Vector3(0, 90, 0);
     private bool temChave = false;
     private int numeroChave = 0;
+    [SerializeField] private GameObject quebraPreFab;
     [SerializeField] private float velocidadeAndar;
     [SerializeField] private float velocidadeCorrer;
     [SerializeField] private float forcaPulo;
@@ -34,6 +35,12 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            contato = true;
+           
+        }
+
         if (sVida.EstaVivo())
         {
             Andar();
@@ -130,12 +137,13 @@ public class PlayerMovement : MonoBehaviour
         animator.SetTrigger("Pegar");
     }
 
-    private void Atacar()
+    private int Atacar()
     {
-        //if(Input.GetMouseButtonDown(0))
-        //{
+       
         animator.SetTrigger("Atacar");
-        //}
+       Instantiate(quebraPreFab , miraMagia.transform.position, miraMagia.transform.rotation);
+       contato = false;
+        return 10;
     }
 
     private void Magia()
@@ -180,7 +188,7 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("EstaNoChao", true);
         }
 
-        if (collision.gameObject.CompareTag("Quebra") && Input.GetMouseButtonDown(0))
+        if (collision.gameObject.CompareTag("Quebrar") && Input.GetMouseButtonDown(0))
         {
             Atacar();
             Destroy(collision.gameObject);
@@ -194,7 +202,7 @@ public class PlayerMovement : MonoBehaviour
             estaNoChao = false;
             animator.SetBool("EstaNoChao", false);
         }
-        if (collision.gameObject.CompareTag("Quebra"))
+        if (collision.gameObject.CompareTag("Quebrar"))
         {
 
             contato = false;
@@ -228,6 +236,16 @@ public class PlayerMovement : MonoBehaviour
             temChave = true;
             numeroChave = other.gameObject.GetComponent<Chave>().NumeroPorta();
             other.gameObject.GetComponent<Chave>().PegarChave();
+        }
+
+        if (other.CompareTag("Quebrar"))
+        {
+          if (contato)
+            {
+               
+                other.gameObject.GetComponent<ObjetoQuebra>().Quebrar(Atacar());
+            }
+
         }
     }
 }
