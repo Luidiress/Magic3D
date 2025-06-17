@@ -174,7 +174,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Quebra"))
+        if (collision.gameObject.CompareTag("Quebrar"))
         {
             Atacar();
         }
