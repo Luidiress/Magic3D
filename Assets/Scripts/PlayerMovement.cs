@@ -160,8 +160,7 @@ public class PlayerMovement : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
         GameObject magia = Instantiate(magiaPreFab, miraMagia.transform.position, miraMagia.transform.rotation);
-        //magia.transform.rotation *= Quaternion.Euler(0, -90, 0); //Machado
-        magia.transform.rotation *= Quaternion.Euler(90, 0, 180); //Flecha
+        magia.transform.rotation *= Quaternion.Euler(90, 0, 0);
         Rigidbody rbMagia = magia.GetComponentInChildren<Rigidbody>();
         rbMagia.AddForce(miraMagia.transform.forward * forcaArremeco, ForceMode.Impulse);
         sVida.UsarMana();
