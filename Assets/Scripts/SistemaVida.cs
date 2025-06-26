@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,7 @@ public class SistemaVida : MonoBehaviour
     [SerializeField] private int mana = 100;
     [SerializeField] private Slider manaIndicador;
     [SerializeField] private Slider vidaIndicador;
+    [SerializeField] private GameObject telaDeMorte;
     private bool estaVivo = true;
     private bool levarDano = true;
     private PlayerMovement pMove;
@@ -31,6 +33,10 @@ public class SistemaVida : MonoBehaviour
         }
 
         pMove = GetComponent<PlayerMovement>();
+        if (telaDeMorte.activeSelf == true)
+        {
+           telaDeMorte.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -73,7 +79,13 @@ public class SistemaVida : MonoBehaviour
         {
             vida = 0;
             estaVivo = false;
+            TelaMorte();
         }
+    }
+
+    private void TelaMorte()
+    {
+       telaDeMorte.SetActive(true);
     }
 
     public void UsarMana()
