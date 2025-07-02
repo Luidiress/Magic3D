@@ -1,4 +1,5 @@
  using UnityEngine;
+using UnityEngine.UI;
 
 public class Aviso : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class Aviso : MonoBehaviour
     [SerializeField] private Color corAviso = Color.white;
     [Header("Aviso temporario?")]
     [SerializeField] private bool avisoTemporario = false;
+    [SerializeField] private GameObject ButtonTeleporte;
 
     public string AvisoTexto()
     {
@@ -37,4 +39,5 @@ public class Aviso : MonoBehaviour
     {
         return avisoTemporario;
     }
+
 }

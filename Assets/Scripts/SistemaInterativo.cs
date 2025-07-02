@@ -12,6 +12,7 @@ public class SistemaInterativo : MonoBehaviour
     [SerializeField] private TextMeshProUGUI textoAviso;
     
 
+
     private void Start()
     {
         spriteInterface.enabled = false;
